@@ -113,4 +113,9 @@
     </declare-styleable>
 
     <attr name="group_members_dialog_icon" format="reference"/>
+
+    <declare-styleable name="AvatarImageView">
+        <attr name="circle" format="boolean"/>
+        <attr name="android:scaleType" />
+    </declare-styleable>
 </resources>

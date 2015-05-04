@@ -20,13 +20,10 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Handler;
 import android.util.AttributeSet;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.makeramen.RoundedImageView;
-
+import org.thoughtcrime.securesms.components.AvatarImageView;
 import org.thoughtcrime.securesms.database.model.ThreadRecord;
 import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.recipients.Recipients;
@@ -47,7 +44,7 @@ public class ShareListItem extends RelativeLayout
   private long       threadId;
   private TextView   fromView;
 
-  private RoundedImageView contactPhotoImage;
+  private AvatarImageView contactPhotoImage;
 
   private final Handler handler = new Handler();
   private int distributionType;
@@ -65,7 +62,7 @@ public class ShareListItem extends RelativeLayout
   @Override
   protected void onFinishInflate() {
     this.fromView          = (TextView)  findViewById(R.id.from);
-    this.contactPhotoImage = (RoundedImageView) findViewById(R.id.contact_photo_image);
+    this.contactPhotoImage = (AvatarImageView) findViewById(R.id.contact_photo_image);
   }
 
   public void set(ThreadRecord thread) {
@@ -77,7 +74,7 @@ public class ShareListItem extends RelativeLayout
     this.fromView.setText(RecipientViewUtil.formatFrom(getContext(), recipients));
 
     setBackground();
-    RecipientViewUtil.setContactPhoto(getContext(), contactPhotoImage, this.recipients.getPrimaryRecipient(), false);
+    this.contactPhotoImage.setAvatar(this.recipients.getPrimaryRecipient(), false);
   }
 
   public void unbind() {
@@ -111,7 +108,7 @@ public class ShareListItem extends RelativeLayout
       @Override
       public void run() {
         fromView.setText(RecipientViewUtil.formatFrom(getContext(), recipients));
-        RecipientViewUtil.setContactPhoto(getContext(), contactPhotoImage, recipients.getPrimaryRecipient(), false);
+        contactPhotoImage.setAvatar(recipients.getPrimaryRecipient(), false);
       }
     });
   }

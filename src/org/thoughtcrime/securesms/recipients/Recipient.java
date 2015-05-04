@@ -23,8 +23,8 @@ import android.util.Log;
 
 import org.thoughtcrime.securesms.contacts.ContactPhotoFactory;
 import org.thoughtcrime.securesms.recipients.RecipientProvider.RecipientDetails;
-import org.thoughtcrime.securesms.util.GroupUtil;
 import org.thoughtcrime.securesms.util.FutureTaskListener;
+import org.thoughtcrime.securesms.util.GroupUtil;
 import org.thoughtcrime.securesms.util.ListenableFutureTask;
 
 import java.util.HashSet;
@@ -33,7 +33,7 @@ public class Recipient {
 
   private final static String TAG = Recipient.class.getSimpleName();
 
-  private final HashSet<RecipientModifiedListener> listeners = new HashSet<RecipientModifiedListener>();
+  private final HashSet<RecipientModifiedListener> listeners = new HashSet<>();
 
   private final long recipientId;
 
@@ -41,8 +41,6 @@ public class Recipient {
   private String name;
 
   private Bitmap contactPhoto;
-  private Bitmap generatedAvatar;
-
   private Uri    contactUri;
 
   Recipient(String number, Bitmap contactPhoto,
@@ -51,7 +49,6 @@ public class Recipient {
     this.number                     = number;
     this.contactPhoto               = contactPhoto;
     this.recipientId                = recipientId;
-    this.generatedAvatar            = null;
 
     future.addListener(new FutureTaskListener<RecipientDetails>() {
       @Override
@@ -147,13 +144,6 @@ public class Recipient {
     return contactPhoto;
   }
 
-  public synchronized Bitmap getGeneratedAvatar(Context context) {
-    if (this.generatedAvatar == null)
-      this.generatedAvatar = AvatarGenerator.generateFor(context, this);
-
-    return this.generatedAvatar;
-  }
-
   public static Recipient getUnknownRecipient(Context context) {
     return new Recipient("Unknown", "Unknown", -1, null,
                          ContactPhotoFactory.getDefaultContactPhoto(context));
@@ -174,7 +164,7 @@ public class Recipient {
     return 31 + (int)this.recipientId;
   }
 
-  public static interface RecipientModifiedListener {
+  public interface RecipientModifiedListener {
     public void onModified(Recipient recipient);
   }
 }

@@ -22,10 +22,10 @@ import android.graphics.Typeface;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import org.thoughtcrime.securesms.components.AvatarImageView;
 import org.thoughtcrime.securesms.database.model.ThreadRecord;
 import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.recipients.Recipients;
@@ -61,7 +61,7 @@ public class ConversationListItem extends RelativeLayout
   private TextView          fromView;
   private TextView          dateView;
   private boolean           read;
-  private ImageView         contactPhotoImage;
+  private AvatarImageView   contactPhotoImage;
 
   private final Handler handler = new Handler();
   private int distributionType;
@@ -81,8 +81,7 @@ public class ConversationListItem extends RelativeLayout
     this.subjectView       = (TextView) findViewById(R.id.subject);
     this.fromView          = (TextView) findViewById(R.id.from);
     this.dateView          = (TextView) findViewById(R.id.date);
-
-    this.contactPhotoImage = (ImageView) findViewById(R.id.contact_photo_image);
+    this.contactPhotoImage = (AvatarImageView) findViewById(R.id.contact_photo_image);
 
     initializeContactWidgetVisibility();
   }
@@ -110,7 +109,7 @@ public class ConversationListItem extends RelativeLayout
     }
 
     setBackground(read, batchMode);
-    RecipientViewUtil.setContactPhoto(context, contactPhotoImage, recipients.getPrimaryRecipient(), true);
+    this.contactPhotoImage.setAvatar(recipients.getPrimaryRecipient(), true);
   }
 
   public void unbind() {
@@ -158,7 +157,7 @@ public class ConversationListItem extends RelativeLayout
       @Override
       public void run() {
         ConversationListItem.this.fromView.setText(RecipientViewUtil.formatFrom(context, recipients, read));
-        RecipientViewUtil.setContactPhoto(context, contactPhotoImage, recipients.getPrimaryRecipient(), true);
+        contactPhotoImage.setAvatar(recipients.getPrimaryRecipient(), true);
       }
     });
   }

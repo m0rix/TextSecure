@@ -57,27 +57,4 @@ public class RecipientViewUtil {
     colors.recycle();
     return builder;
   }
-
-  public static void setContactPhoto(final Context context, final ImageView imageView, final Recipient recipient, boolean showQuickContact) {
-    if (recipient == null) return;
-
-    imageView.setImageBitmap(recipient.getContactPhoto());
-
-    if (!recipient.isGroupRecipient() && showQuickContact) {
-      imageView.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-          if (recipient.getContactUri() != null) {
-            QuickContact.showQuickContact(context, imageView, recipient.getContactUri(), QuickContact.MODE_LARGE, null);
-          } else {
-            Intent intent = new Intent(Intents.SHOW_OR_CREATE_CONTACT,  Uri.fromParts("tel", recipient.getNumber(), null));
-            context.startActivity(intent);
-          }
-        }
-      });
-    } else {
-      imageView.setOnClickListener(null);
-    }
-  }
-
 }
