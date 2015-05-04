@@ -26,12 +26,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.thoughtcrime.securesms.components.AvatarImageView;
+import org.thoughtcrime.securesms.components.FromTextView;
 import org.thoughtcrime.securesms.database.model.ThreadRecord;
 import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.recipients.Recipients;
 import org.thoughtcrime.securesms.util.DateUtils;
 import org.thoughtcrime.securesms.util.Emoji;
-import org.thoughtcrime.securesms.util.RecipientViewUtil;
 
 import java.util.Locale;
 import java.util.Set;
@@ -53,15 +53,15 @@ public class ConversationListItem extends RelativeLayout
   private final static Typeface BOLD_TYPEFACE  = Typeface.create("sans-serif", Typeface.BOLD);
   private final static Typeface LIGHT_TYPEFACE = Typeface.create("sans-serif-light", Typeface.NORMAL);
 
-  private Context           context;
-  private Set<Long>         selectedThreads;
-  private Recipients        recipients;
-  private long              threadId;
-  private TextView          subjectView;
-  private TextView          fromView;
-  private TextView          dateView;
-  private boolean           read;
-  private AvatarImageView   contactPhotoImage;
+  private Context         context;
+  private Set<Long>       selectedThreads;
+  private Recipients      recipients;
+  private long            threadId;
+  private TextView        subjectView;
+  private FromTextView    fromView;
+  private TextView        dateView;
+  private boolean         read;
+  private AvatarImageView contactPhotoImage;
 
   private final Handler handler = new Handler();
   private int distributionType;
@@ -79,7 +79,7 @@ public class ConversationListItem extends RelativeLayout
   @Override
   protected void onFinishInflate() {
     this.subjectView       = (TextView) findViewById(R.id.subject);
-    this.fromView          = (TextView) findViewById(R.id.from);
+    this.fromView          = (FromTextView) findViewById(R.id.from);
     this.dateView          = (TextView) findViewById(R.id.date);
     this.contactPhotoImage = (AvatarImageView) findViewById(R.id.contact_photo_image);
 
@@ -94,7 +94,7 @@ public class ConversationListItem extends RelativeLayout
     this.distributionType = thread.getDistributionType();
 
     this.recipients.addListener(this);
-    this.fromView.setText(RecipientViewUtil.formatFrom(context, recipients, read));
+    this.fromView.setText(recipients, read);
 
     this.subjectView.setText(Emoji.getInstance(context).emojify(thread.getDisplayBody(),
                                                                 Emoji.EMOJI_SMALL,
@@ -156,7 +156,7 @@ public class ConversationListItem extends RelativeLayout
     handler.post(new Runnable() {
       @Override
       public void run() {
-        ConversationListItem.this.fromView.setText(RecipientViewUtil.formatFrom(context, recipients, read));
+        fromView.setText(recipients, read);
         contactPhotoImage.setAvatar(recipients.getPrimaryRecipient(), true);
       }
     });

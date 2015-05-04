@@ -21,13 +21,12 @@ import android.content.res.TypedArray;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import org.thoughtcrime.securesms.components.AvatarImageView;
+import org.thoughtcrime.securesms.components.FromTextView;
 import org.thoughtcrime.securesms.database.model.ThreadRecord;
 import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.recipients.Recipients;
-import org.thoughtcrime.securesms.util.RecipientViewUtil;
 
 /**
  * A simple view to show the recipients of an open conversation
@@ -39,10 +38,10 @@ public class ShareListItem extends RelativeLayout
 {
   private final static String TAG = ShareListItem.class.getSimpleName();
 
-  private Context    context;
-  private Recipients recipients;
-  private long       threadId;
-  private TextView   fromView;
+  private Context      context;
+  private Recipients   recipients;
+  private long         threadId;
+  private FromTextView fromView;
 
   private AvatarImageView contactPhotoImage;
 
@@ -61,7 +60,7 @@ public class ShareListItem extends RelativeLayout
 
   @Override
   protected void onFinishInflate() {
-    this.fromView          = (TextView)  findViewById(R.id.from);
+    this.fromView          = (FromTextView)    findViewById(R.id.from);
     this.contactPhotoImage = (AvatarImageView) findViewById(R.id.contact_photo_image);
   }
 
@@ -71,7 +70,7 @@ public class ShareListItem extends RelativeLayout
     this.distributionType = thread.getDistributionType();
 
     this.recipients.addListener(this);
-    this.fromView.setText(RecipientViewUtil.formatFrom(getContext(), recipients));
+    this.fromView.setText(recipients);
 
     setBackground();
     this.contactPhotoImage.setAvatar(this.recipients.getPrimaryRecipient(), false);
@@ -107,7 +106,7 @@ public class ShareListItem extends RelativeLayout
     handler.post(new Runnable() {
       @Override
       public void run() {
-        fromView.setText(RecipientViewUtil.formatFrom(getContext(), recipients));
+        fromView.setText(recipients);
         contactPhotoImage.setAvatar(recipients.getPrimaryRecipient(), false);
       }
     });
