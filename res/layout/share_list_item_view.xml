@@ -17,8 +17,6 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:cropToPadding="true"
-        android:scaleType="centerCrop"
-        app:circle="true"
         android:contentDescription="@string/SingleContactSelectionActivity_contact_photo" />
 
     <LinearLayout
