@@ -18,6 +18,7 @@ package org.thoughtcrime.securesms.recipients;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.util.Log;
 
@@ -40,10 +41,10 @@ public class Recipient {
   private String number;
   private String name;
 
-  private Bitmap contactPhoto;
-  private Uri    contactUri;
+  private Drawable contactPhoto;
+  private Uri      contactUri;
 
-  Recipient(String number, Bitmap contactPhoto,
+  Recipient(String number, Drawable contactPhoto,
             long recipientId, ListenableFutureTask<RecipientDetails> future)
   {
     this.number                     = number;
@@ -78,7 +79,7 @@ public class Recipient {
     });
   }
 
-  Recipient(String name, String number, long recipientId, Uri contactUri, Bitmap contactPhoto) {
+  Recipient(String name, String number, long recipientId, Uri contactUri, Drawable contactPhoto) {
     this.number                     = number;
     this.recipientId                = recipientId;
     this.contactUri                 = contactUri;
@@ -90,7 +91,7 @@ public class Recipient {
     return this.contactUri;
   }
 
-  public synchronized void setContactPhoto(Bitmap bitmap) {
+  public synchronized void setContactPhoto(Drawable bitmap) {
     this.contactPhoto = bitmap;
     notifyListeners();
   }
@@ -140,13 +141,13 @@ public class Recipient {
     return (name == null ? number : name);
   }
 
-  public synchronized Bitmap getContactPhoto() {
+  public synchronized Drawable getContactPhoto() {
     return contactPhoto;
   }
 
   public static Recipient getUnknownRecipient(Context context) {
     return new Recipient("Unknown", "Unknown", -1, null,
-                         ContactPhotoFactory.getDefaultContactPhoto(context));
+                         ContactPhotoFactory.getDefaultContactPhoto(null));
   }
 
   @Override
